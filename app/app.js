@@ -370,17 +370,96 @@
     $("texto-resumo").textContent = texto || "";
   }
 
-  // ---------- Assistente (chega na sexta) ----------
+  // ---------- Assistente ----------
 
-  const AVISO_ASSISTENTE = "O assistente chega na sexta.";
+  const LADO_MAXIMO = 1600;
+  const botoesAssistente = () => $("form-assistente").querySelectorAll("button");
+
+  function travarAssistente(travar) {
+    botoesAssistente().forEach((b) => (b.disabled = travar));
+    $("frase-assistente").disabled = travar;
+  }
+
+  async function falarComAssistente(pedido) {
+    const { data } = await sb.auth.getSession();
+    const token = data && data.session && data.session.access_token;
+    if (!token) return avisar("assistente-msg", "Sua entrada expirou. Toque em Sair e entre de novo.");
+
+    travarAssistente(true);
+    avisar("assistente-msg", pedido.imagem ? "Lendo o cupom…" : "Pensando…");
+    try {
+      const r = await fetch("/api/assistente", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+        body: JSON.stringify({ ...pedido, categorias: cfg.CATEGORIAS })
+      });
+      let corpo = {};
+      try { corpo = await r.json(); } catch (e) {}
+      if (!r.ok) {
+        avisar("assistente-msg", corpo.erro ||
+          "O assistente não respondeu. Tente de novo em instantes ou lance à mão.");
+        return;
+      }
+      avisar("assistente-msg", corpo.resposta || "");
+      if (corpo.lancado) {
+        $("frase-assistente").value = "";
+        carregarGastos();
+      }
+    } catch (e) {
+      avisar("assistente-msg", "Sem conexão com a internet. Confira a rede e tente de novo.");
+    } finally {
+      travarAssistente(false);
+    }
+  }
 
   $("form-assistente").addEventListener("submit", (ev) => {
     ev.preventDefault();
-    avisar("assistente-msg", AVISO_ASSISTENTE);
+    const mensagem = $("frase-assistente").value.trim();
+    if (!mensagem) return avisar("assistente-msg", "Escreva o gasto numa frase, por exemplo: mercado 50 hoje.");
+    falarComAssistente({ mensagem });
   });
 
-  $("botao-foto").addEventListener("click", () => {
-    avisar("assistente-msg", AVISO_ASSISTENTE);
+  // Reduz a foto no próprio aparelho (no máximo 1600 px, JPEG). Nada é guardado.
+  function reduzirFoto(arquivo) {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(arquivo);
+      const img = new Image();
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        const escala = Math.min(1, LADO_MAXIMO / Math.max(img.width, img.height));
+        const tela = document.createElement("canvas");
+        tela.width = Math.round(img.width * escala);
+        tela.height = Math.round(img.height * escala);
+        tela.getContext("2d").drawImage(img, 0, 0, tela.width, tela.height);
+        resolve(tela.toDataURL("image/jpeg", 0.85).split(",")[1]);
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error("foto"));
+      };
+      img.src = url;
+    });
+  }
+
+  const seletorFoto = document.createElement("input");
+  seletorFoto.type = "file";
+  seletorFoto.accept = "image/*";
+  seletorFoto.hidden = true;
+  document.body.append(seletorFoto);
+
+  $("botao-foto").addEventListener("click", () => seletorFoto.click());
+
+  seletorFoto.addEventListener("change", async () => {
+    const arquivo = seletorFoto.files && seletorFoto.files[0];
+    seletorFoto.value = "";
+    if (!arquivo) return;
+    let imagem;
+    try {
+      imagem = await reduzirFoto(arquivo);
+    } catch (e) {
+      return avisar("assistente-msg", "Não consegui abrir essa foto. Tire outra foto do cupom e tente de novo.");
+    }
+    falarComAssistente({ mensagem: $("frase-assistente").value.trim(), imagem, mime: "image/jpeg" });
   });
 
   // ---------- Quem está dentro ----------
