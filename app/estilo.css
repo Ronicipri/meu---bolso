@@ -1,0 +1,212 @@
+/* Meu Bolso — visual calmo: verde-água, branco e cinza-claro.
+   Pensado primeiro para o celular de 390 px. */
+
+:root {
+  --agua: #3bb3a6;
+  --agua-escura: #2a8c81;
+  --agua-clara: #e3f5f2;
+  --branco: #ffffff;
+  --fundo: #f5faf9;
+  --cinza-claro: #e4e9e8;
+  --cinza: #8a9a98;
+  --texto: #2e4442;
+  --raio: 16px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+[hidden] { display: none !important; }
+
+.tela {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 16px 16px 40px;
+}
+
+h1 { font-size: 1.5rem; margin: 0; }
+h2 { font-size: 1.05rem; margin: 0 0 12px; }
+
+.suave { color: var(--cinza); margin: 4px 0; }
+
+.escondido {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+/* Cartões */
+.cartao {
+  background: var(--branco);
+  border: 1px solid var(--cinza-claro);
+  border-radius: var(--raio);
+  padding: 16px;
+  margin-top: 16px;
+}
+
+/* Campos */
+label {
+  display: block;
+  font-size: 0.9rem;
+  margin: 12px 0 4px;
+}
+
+input, select {
+  width: 100%;
+  font: inherit;
+  padding: 12px;
+  border: 1px solid var(--cinza-claro);
+  border-radius: 12px;
+  background: var(--branco);
+  color: var(--texto);
+}
+
+input:focus, select:focus {
+  outline: 2px solid var(--agua);
+  outline-offset: 1px;
+}
+
+.linha {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+.linha > * { flex: 1; min-width: 0; }
+
+/* Botões */
+.botao {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 14px;
+  font: inherit;
+  font-weight: 600;
+  border: 0;
+  border-radius: 12px;
+  background: var(--agua);
+  color: var(--branco);
+  cursor: pointer;
+}
+.botao:hover { background: var(--agua-escura); }
+.botao:disabled { opacity: 0.6; cursor: wait; }
+
+.botao-claro {
+  background: var(--agua-clara);
+  color: var(--agua-escura);
+}
+.botao-claro:hover { background: var(--cinza-claro); }
+
+.linha .botao { margin-top: 0; }
+.form-limite .linha { margin-top: 0; }
+
+.botao-link {
+  background: none;
+  border: 0;
+  padding: 8px;
+  font: inherit;
+  color: var(--agua-escura);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.mensagem {
+  min-height: 1.4em;
+  margin: 8px 0 0;
+  color: var(--texto);
+  font-size: 0.95rem;
+}
+
+/* Tela de entrada */
+.entrada { text-align: center; padding-top: 48px; }
+.entrada form { text-align: left; }
+.entrada-icone { width: 72px; height: 72px; }
+
+/* Topo */
+.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Destaque: o que aparece nos primeiros cinco segundos */
+.destaque {
+  background: var(--agua-clara);
+  border-color: transparent;
+  text-align: center;
+}
+.rotulo { margin: 0; font-size: 0.95rem; }
+.numero-grande {
+  font-size: 2.6rem;
+  font-weight: 700;
+  margin: 4px 0;
+  color: var(--agua-escura);
+}
+.numero-grande.passou { color: var(--cinza); }
+.linha-total { margin: 4px 0; }
+.destaque .form-limite { text-align: left; }
+
+/* Barras por categoria */
+.barras { list-style: none; margin: 0; padding: 0; }
+.barras li { margin-bottom: 12px; }
+.barra-topo {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+}
+.barra-fundo {
+  height: 10px;
+  background: var(--cinza-claro);
+  border-radius: 99px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+.barra-cheia {
+  height: 100%;
+  background: var(--agua);
+  border-radius: 99px;
+}
+
+/* Lista do mês */
+.lista { list-style: none; margin: 0; padding: 0; }
+.lista li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+  border-top: 1px solid var(--cinza-claro);
+}
+.lista li:first-child { border-top: 0; }
+.item-info { flex: 1; min-width: 0; }
+.item-desc {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.item-detalhe { font-size: 0.85rem; color: var(--cinza); }
+.item-valor { font-weight: 600; white-space: nowrap; }
+.botao-apagar {
+  background: none;
+  border: 1px solid var(--cinza-claro);
+  border-radius: 10px;
+  padding: 6px 10px;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--cinza);
+  cursor: pointer;
+}
+.botao-apagar:hover { color: var(--texto); }
+
+/* Computador: um pouco mais de respiro */
+@media (min-width: 768px) {
+  .tela { padding-top: 32px; }
+  .numero-grande { font-size: 3rem; }
+}

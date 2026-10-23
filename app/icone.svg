@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#3bb3a6"/>
+  <!-- bolso -->
+  <path d="M136 160h240v120c0 66-54 120-120 120s-120-54-120-120z" fill="#ffffff"/>
+  <path d="M136 160h240v40H136z" fill="#e4e9e8"/>
+  <!-- moeda -->
+  <circle cx="256" cy="290" r="48" fill="#3bb3a6"/>
+  <circle cx="256" cy="290" r="30" fill="none" stroke="#e3f5f2" stroke-width="10"/>
+</svg>

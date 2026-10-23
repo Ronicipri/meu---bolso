@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meu Bolso</title>
+  <meta name="theme-color" content="#3bb3a6">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icone.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icone.svg">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+  <!-- Tela de entrada -->
+  <main id="tela-entrada" class="tela entrada">
+    <img src="icone.svg" alt="" class="entrada-icone">
+    <h1>Meu Bolso</h1>
+    <p class="suave">Seus gastos do mês, com calma.</p>
+
+    <form id="form-entrada" class="cartao" novalidate>
+      <label for="email">E-mail</label>
+      <input id="email" type="email" autocomplete="email" inputmode="email" required>
+
+      <label for="senha">Senha</label>
+      <input id="senha" type="password" autocomplete="current-password" minlength="6" required>
+
+      <button type="submit" class="botao">Entrar</button>
+      <button type="button" id="botao-criar" class="botao botao-claro">Criar conta</button>
+      <p id="entrada-msg" class="mensagem" role="status"></p>
+    </form>
+  </main>
+
+  <!-- Tela principal -->
+  <main id="tela-principal" class="tela" hidden>
+    <header class="topo">
+      <h1>Meu Bolso</h1>
+      <button type="button" id="botao-sair" class="botao-link">Sair</button>
+    </header>
+
+    <!-- Os primeiros cinco segundos -->
+    <section class="cartao destaque" aria-live="polite">
+      <p class="rotulo">Ainda posso gastar em <span id="nome-mes"></span></p>
+      <p id="restante" class="numero-grande">—</p>
+      <p id="frase-limite" class="suave"></p>
+      <p class="linha-total">Gasto no mês: <strong id="total-mes">R$ 0,00</strong></p>
+      <p class="linha-total">Limite: <strong id="limite-atual">não definido</strong>
+        <button type="button" id="botao-limite" class="botao-link">Definir limite</button>
+      </p>
+      <form id="form-limite" class="form-limite" hidden novalidate>
+        <label for="valor-limite">Limite do mês (R$)</label>
+        <div class="linha">
+          <input id="valor-limite" type="text" inputmode="decimal" placeholder="Ex.: 1500,00">
+          <button type="submit" class="botao">Salvar</button>
+        </div>
+        <p id="limite-msg" class="mensagem" role="status"></p>
+      </form>
+    </section>
+
+    <!-- Resumo da semana: só aparece quando houver um -->
+    <section id="cartao-resumo" class="cartao" hidden>
+      <h2>Resumo da semana</h2>
+      <p id="texto-resumo"></p>
+    </section>
+
+    <!-- Lançar à mão -->
+    <section class="cartao">
+      <h2>Lançar à mão</h2>
+      <form id="form-gasto" novalidate>
+        <label for="valor">Valor (R$)</label>
+        <input id="valor" type="text" inputmode="decimal" placeholder="Ex.: 12,50" autocomplete="off">
+
+        <label for="descricao">Onde ou com o quê</label>
+        <input id="descricao" type="text" placeholder="Ex.: Padaria" autocomplete="off" maxlength="80">
+
+        <div class="linha">
+          <div class="campo">
+            <label for="categoria">Categoria</label>
+            <select id="categoria"></select>
+          </div>
+          <div class="campo">
+            <label for="data">Data</label>
+            <input id="data" type="date">
+          </div>
+        </div>
+
+        <button type="submit" class="botao">Salvar gasto</button>
+        <p id="gasto-msg" class="mensagem" role="status"></p>
+      </form>
+    </section>
+
+    <!-- Barras por categoria -->
+    <section class="cartao">
+      <h2>Por categoria</h2>
+      <ul id="barras" class="barras"></ul>
+    </section>
+
+    <!-- Lista do mês -->
+    <section class="cartao">
+      <h2>Gastos do mês</h2>
+      <p id="lista-vazia" class="suave">Nenhum gasto lançado neste mês ainda.</p>
+      <ul id="lista" class="lista"></ul>
+    </section>
+
+    <!-- Espaço do assistente -->
+    <section class="cartao assistente">
+      <h2>Assistente</h2>
+      <p class="suave">Escreva o gasto numa frase ou mande a foto do cupom.</p>
+      <form id="form-assistente" novalidate>
+        <label for="frase-assistente" class="escondido">Frase do gasto</label>
+        <input id="frase-assistente" type="text" placeholder="Ex.: 32 reais no restaurante hoje" autocomplete="off">
+        <div class="linha">
+          <button type="submit" class="botao">Enviar</button>
+          <button type="button" id="botao-foto" class="botao botao-claro">Foto do cupom</button>
+        </div>
+        <p id="assistente-msg" class="mensagem" role="status"></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="configuracao.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
