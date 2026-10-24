@@ -5,10 +5,12 @@
   --agua: #3bb3a6;
   --agua-escura: #2a8c81;
   --agua-clara: #e3f5f2;
+  --agua-botao: #1f7a70;
+  --agua-botao-escura: #17635b;
   --branco: #ffffff;
   --fundo: #f5faf9;
   --cinza-claro: #e4e9e8;
-  --cinza: #8a9a98;
+  --cinza: #5f706e;
   --texto: #2e4442;
   --raio: 16px;
 }
@@ -92,11 +94,11 @@ input:focus, select:focus {
   font-weight: 600;
   border: 0;
   border-radius: 12px;
-  background: var(--agua);
+  background: var(--agua-botao);
   color: var(--branco);
   cursor: pointer;
 }
-.botao:hover { background: var(--agua-escura); }
+.botao:hover { background: var(--agua-botao-escura); }
 .botao:disabled { opacity: 0.6; cursor: wait; }
 
 .botao-claro {
@@ -111,6 +113,8 @@ input:focus, select:focus {
 .botao-link {
   background: none;
   border: 0;
+  min-height: 44px;
+  min-width: 44px;
   padding: 8px;
   font: inherit;
   color: var(--agua-escura);
@@ -191,15 +195,18 @@ input:focus, select:focus {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.item-detalhe { font-size: 0.85rem; color: var(--cinza); }
+.item-detalhe { font-size: 0.9rem; color: var(--cinza); }
 .item-valor { font-weight: 600; white-space: nowrap; }
 .botao-apagar {
   background: none;
   border: 1px solid var(--cinza-claro);
   border-radius: 10px;
-  padding: 6px 10px;
+  min-height: 44px;
+  min-width: 44px;
+  margin-left: 4px;
+  padding: 6px 14px;
   font: inherit;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--cinza);
   cursor: pointer;
 }

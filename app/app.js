@@ -175,9 +175,14 @@
       .order("data", { ascending: false })
       .order("criado_em", { ascending: false });
     if (error) {
-      avisar("gasto-msg", "Não consegui carregar os gastos. " + frase(error));
+      // O erro aparece na própria lista, e a frase de lista vazia some.
+      avisar("lista-msg", "Não consegui carregar os gastos. " + frase(error));
+      $("lista-msg").hidden = false;
+      $("lista-vazia").hidden = true;
       return;
     }
+    avisar("lista-msg", "");
+    $("lista-msg").hidden = true;
     gastos = (data || []).map((g) => ({ ...g, valor: Number(g.valor) || 0 }));
     desenhar();
   }
