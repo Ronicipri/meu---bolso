@@ -122,6 +122,28 @@ input:focus, select:focus {
   cursor: pointer;
 }
 
+/* Campo do assistente com o microfone ao lado */
+.linha-campo {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+.linha-campo input { flex: 1; min-width: 0; }
+.botao-voz {
+  flex: 0 0 48px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 12px;
+  background: var(--agua-clara);
+  color: var(--agua-botao);
+  cursor: pointer;
+}
+.botao-voz.ouvindo { background: var(--agua-botao); color: var(--branco); }
+.botao-voz:disabled { opacity: 0.6; cursor: wait; }
+
 .mensagem {
   min-height: 1.4em;
   margin: 8px 0 0;

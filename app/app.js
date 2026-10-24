@@ -424,6 +424,64 @@
     falarComAssistente({ mensagem });
   });
 
+  // Microfone: escuta em português e manda o que ouviu ao assistente. A voz não é guardada.
+  const Reconhecimento = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const botaoVoz = $("botao-voz");
+
+  if (!Reconhecimento) {
+    botaoVoz.hidden = true;
+    $("dica-voz").hidden = false;
+  } else {
+    botaoVoz.hidden = false;
+    const ouvido = new Reconhecimento();
+    ouvido.lang = "pt-BR";
+    ouvido.interimResults = false;
+    ouvido.maxAlternatives = 1;
+    let ouvindo = false;
+
+    function marcarOuvindo(sim) {
+      ouvindo = sim;
+      botaoVoz.classList.toggle("ouvindo", sim);
+      botaoVoz.setAttribute("aria-label", sim ? "Parar de ouvir" : "Falar o gasto");
+    }
+
+    botaoVoz.addEventListener("click", () => {
+      if (ouvindo) return ouvido.stop();
+      try {
+        ouvido.start();
+        marcarOuvindo(true);
+        avisar("assistente-msg", "Ouvindo… fale o gasto.");
+      } catch (e) {
+        avisar("assistente-msg", "Não consegui ligar o microfone. Espere um instante e toque de novo.");
+      }
+    });
+
+    ouvido.addEventListener("result", (ev) => {
+      const texto = (ev.results[0] && ev.results[0][0] && ev.results[0][0].transcript || "").trim();
+      if (!texto) return;
+      $("frase-assistente").value = texto;
+      falarComAssistente({ mensagem: texto });
+    });
+
+    ouvido.addEventListener("error", (ev) => {
+      if (ev.error === "aborted") return;
+      if (ev.error === "not-allowed" || ev.error === "service-not-allowed")
+        return avisar("assistente-msg", "O navegador não deixou usar o microfone. Libere o microfone para este site e tente de novo.");
+      if (ev.error === "no-speech")
+        return avisar("assistente-msg", "Não ouvi nada. Toque no microfone e fale o gasto de novo.");
+      if (ev.error === "audio-capture")
+        return avisar("assistente-msg", "Não achei um microfone. Confira o microfone do aparelho ou escreva o gasto.");
+      if (ev.error === "network")
+        return avisar("assistente-msg", "Sem internet para entender a voz. Confira a rede ou escreva o gasto.");
+      avisar("assistente-msg", "Não entendi o que foi falado. Tente de novo ou escreva o gasto.");
+    });
+
+    ouvido.addEventListener("end", () => {
+      marcarOuvindo(false);
+      if ($("assistente-msg").textContent.startsWith("Ouvindo")) avisar("assistente-msg", "");
+    });
+  }
+
   // Reduz a foto no próprio aparelho (no máximo 1600 px, JPEG). Nada é guardado.
   function reduzirFoto(arquivo) {
     return new Promise((resolve, reject) => {

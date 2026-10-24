@@ -109,7 +109,16 @@
       <p class="suave">Escreva o gasto numa frase ou mande a foto do cupom.</p>
       <form id="form-assistente" novalidate>
         <label for="frase-assistente" class="escondido">Frase do gasto</label>
-        <input id="frase-assistente" type="text" placeholder="Ex.: 32 reais no restaurante hoje" autocomplete="off">
+        <div class="linha-campo">
+          <input id="frase-assistente" type="text" placeholder="Ex.: 32 reais no restaurante hoje" autocomplete="off">
+          <button type="button" id="botao-voz" class="botao-voz" aria-label="Falar o gasto" title="Falar o gasto" hidden>
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="3" width="6" height="11" rx="3"></rect>
+              <path d="M5 11a7 7 0 0 0 14 0M12 18v3"></path>
+            </svg>
+          </button>
+        </div>
+        <p id="dica-voz" class="suave" hidden>Para falar o gasto, use o microfone do teclado do celular.</p>
         <div class="linha">
           <button type="submit" class="botao">Enviar</button>
           <button type="button" id="botao-foto" class="botao botao-claro">Foto do cupom</button>
